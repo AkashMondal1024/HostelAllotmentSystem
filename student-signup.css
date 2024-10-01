@@ -1,0 +1,152 @@
+body {
+    font-family: 'Kanit', sans-serif;
+    background-color: #D3C5E5;
+    margin: 0;
+    padding: 0;
+}
+
+.buttons {
+    border-radius: 6px;
+    border: none;
+    height: 40px;
+    background-color: #735DA5;
+    cursor: pointer;
+    color: #D3C5E5;
+    font-size: 17px;
+}
+
+.buttons:hover {
+    background: #8a79b0;
+}
+
+header {
+    height: 50px;
+    width: 100%;
+    background: #735DA5;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #D3C5E5;
+}
+
+.navbar {
+    background-color: #D3C5E5;
+    display: flex;
+    justify-content: flex-end;
+    padding: 7px;
+    align-items: center;
+    border-bottom: 1px solid #735DA5;
+    position: relative;
+}
+
+.navbar-dark-section {
+    position: absolute;
+    left: 0;
+    width: 220px;
+    height: 100%;
+    background-color: #443861;
+}
+
+.content-wrapper {
+    display: flex;
+    width: 100%;
+}
+
+.dashboard {
+    width: 220px;
+    /* height: calc(100vh - 57px); */
+    background-color: #443861;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dashboard button {
+    margin: 10px 0;
+    width: 80%;
+    background-color: #D3C5E5;
+    color: #735DA5;
+}
+
+.dashboard button:hover {
+    background-color: #B4A0E5;
+}
+
+.dashboard button:active {
+    background: #6a44bc;
+    color: white;
+}
+
+.all-info-container {
+    display: flex;
+    justify-content: center;
+    width: calc(100% - 220px); /* Adjusted for sidebar width */
+    padding: 20px;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 800px;
+    width: 100%;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="file"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button[type="button"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="button"]:hover {
+    background-color: #218838;
+}
+
+span {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}

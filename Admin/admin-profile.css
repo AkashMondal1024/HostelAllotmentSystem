@@ -1,0 +1,115 @@
+body{
+    font-family: 'Kanit',sans-serif;
+    background-color: #D3C5E5;
+}
+.buttons{
+    border-radius: 6px; 
+    border: none; 
+    height: 40px; 
+    background-color: #735DA5;
+    cursor: pointer;
+    font-family: 'Kanit',sans-serif;
+    color: #D3C5E5;
+    font-size: 17px;
+}
+.buttons:hover{
+    background: #8a79b0;
+}
+.buttons:active{
+    background: #6a44bc;
+}
+header{
+    height: 50px;
+    width: auto;
+    background: #735DA5;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #D3C5E5;
+}
+.navbar-dark-section {
+    position: absolute;
+    left: 0;
+    width: 220px; 
+    height: 100%;
+    background-color: #443861;
+    
+}
+.abcd {
+    display: flex;
+    width: 100%;
+    background-color: #D3C5E5; /* Same as navbar background color */
+    /* flex-grow: 1; */
+    justify-content: space-between;
+}
+.dashboard button {
+    margin: 10px 0;
+    width: 80%;
+    background-color: #D3C5E5;
+    color: #D3C5E5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #735DA5;
+}
+.dashboard button:hover {
+    background-color: #B4A0E5;
+}
+.dashboard button:active{
+    background: #6a44bc;
+    color: white;
+}
+.dashboard {
+    width: 220px; /* Updated width */
+    height: 93.5vh; /* Full height of the screen */
+    background-color: #443861;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.all-info-container{
+    display: flex;
+    justify-content: space-between;
+    width: 1150px;
+    margin-right: 100px;
+    border-color: #735DA5;
+    border-width: 4px; 
+    border-style: solid;
+    align-items: center;
+    height: 570px;
+}
+
+.content{
+    padding: 20px;
+    /* display: flex;
+    justify-content: space-between; */
+}
+
+.each-text {
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px; /* Optional: adds space between each row */
+    border-color: #735DA5;
+    border-width: 1px; 
+    border-style: solid;
+    margin: 14px;
+}
+
+.label {
+    font-weight: 500;
+    margin-right: 1px; /* Adjust the space between label and value if needed */
+    margin: 6px;
+}
+
+.value {
+    font-weight: 300;
+    margin: 6px;
+}
+
+.student-image{
+    height: 190px;
+    width: auto;
+}
