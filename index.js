@@ -6,7 +6,4 @@ document.addEventListener("DOMContentLoaded",function(){
     studentLogin[1].addEventListener("click",function(){
         window.location.href="admin.html";
     });
-
-
-    
 });
