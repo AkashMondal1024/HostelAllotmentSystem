@@ -16,9 +16,16 @@ document.addEventListener("DOMContentLoaded", () => {
   account
     .get() // Get the current session
     .then((response) => {
-      // If a session exists, redirect to studentHome.html
-      console.log("Session active. Redirecting to StudentHome.");
-      window.location.href = "studentHome.html";
+      // Check if the user is an admin or student
+      if (response.labels && response.labels.includes("admin")) {
+        console.log("Admin detected. Access denied for students.");
+        document.getElementById("message").textContent =
+          "Admins cannot log in here.";
+        account.deleteSession("current"); // Log out the user if they are an admin
+      } else {
+        console.log("Student session active. Redirecting to StudentHome.");
+        window.location.href = "studentHome.html"; // Redirect to student home if the user is a student
+      }
     })
     .catch((error) => {
       // No active session found, continue with the login page
@@ -39,16 +46,7 @@ function login() {
   account
     .createEmailPasswordSession(email, password)
     .then((response) => {
-      console.log("Login Successful: ", response);
-      document.getElementById("message").textContent = "Login Successful";
-      localStorage.setItem("userID", response.userId);
-
-      // Fetch user profile from the database after successful login
       fetchUserProfile(response.userId);
-
-      setTimeout(() => {
-        window.location.href = "studentHome.html";
-      }, 1000);
     })
     .catch((error) => {
       console.error("Login Failed", error);
@@ -64,13 +62,26 @@ function login() {
 
 // Function to fetch user profile from the database
 function fetchUserProfile(userId) {
-  databases
-    .getDocument(DATABASE_ID, PROFILE_COLLECTION, userId)
-    .then((profile) => {
-      console.log("User Profile Data: ", profile);
-      // You can store this data in localStorage or use it as needed
+  account
+    .get() // Get the session to check user label
+    .then((session) => {
+      console.log("Session Data: ", session);
+
+      // Assuming the session data contains roles or labels for the user
+      // Check if the user's label is "admin"
+      if (session.labels && session.labels.includes("admin")) {
+        document.getElementById("message").textContent = "Invalid Credentials";
+        account.deleteSession("current");
+        console.log("Invalid Credentials");
+      } else {
+        localStorage.setItem("userID", userId);
+        window.location.href = "StudentHome.html";
+      }
     })
     .catch((error) => {
-      console.error("Failed to fetch user profile data:", error);
+      console.error("Failed to verify label from session data:", error);
+      document.getElementById("message").textContent =
+        "Error: Unable to verify label.";
+      account.deleteSession("current"); // Log out the user if the profile check fails
     });
 }
