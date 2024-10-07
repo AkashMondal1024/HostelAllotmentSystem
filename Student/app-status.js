@@ -74,8 +74,6 @@ account
         document.getElementById("stream").textContent = doc.Stream || "N/A";
         document.getElementById("semester").textContent = doc.Semester || "N/A";
         document.getElementById("roll").textContent = doc.RollNo || "N/A";
-        // document.getElementById("ack-no").textContent = doc. || "N/A";
-        // document.getElementById("status").textContent = doc. || "N/A";
       })
       .catch((error) => {
         console.error("Failed to fetch student data:", error);
@@ -86,3 +84,32 @@ account
     document.getElementById("name").textContent = "Failed to load name.";
   });
 }
+
+
+
+if (!userId) {
+  // If no userID is found, redirect to the login page
+  window.location.href = "student.html";
+  } else {
+  // Fetch the account details of the logged-in user
+  account
+    .get()
+    .then((response) => {
+      // Display the user's name on the dashboard
+      document.getElementById("name").textContent = response.name;
+      
+      // Fetch additional student profile data from the Appwrite database
+      databases.getDocument(DATABASE_ID, "670257ac0031bc7067ce", userId)
+        .then((doc) => {
+          document.getElementById("status").textContent = doc.Status || "-";
+          document.getElementById("remarks").textContent = doc.Remarks || "-";
+        })
+        .catch((error) => {
+          console.error("Failed to fetch student data:", error);
+        });
+    })
+    .catch((error) => {
+      console.error("Failed to fetch user details:", error);
+      document.getElementById("name").textContent = "Failed to load name.";
+    });
+  }
