@@ -6,6 +6,7 @@ client
   .setProject("66cfe746002e495cbc84"); // Your project ID
 
 const databases = new Appwrite.Databases(client);
+const storage = new Appwrite.Storage(client); // Initialize storage client
 
 // Constants for database and collection IDs
 const DATABASE_ID = "66e4b088002534a2ffe1";
@@ -13,9 +14,7 @@ const COLLECTION_ID = "670257ac0031bc7067ce";
 
 // Function to fetch and display applications
 function displayApplications() {
-  const applicationsTableBody = document.getElementById(
-    "applications-table-body"
-  );
+  const applicationsTableBody = document.getElementById("applications-table-body");
   const messageElement = document.getElementById("message");
 
   // Clear the table body before adding new rows
@@ -57,31 +56,19 @@ function displayApplications() {
               <td>${app.Semester || "N/A"}</td>
               <td>${app.FamilyAnnualIncome || "N/A"}</td>
               <td>${app.Distance || "N/A"}</td>
-              <td><a href="#" onclick="viewAadhar('${
-                app.AadharFileID || "N/A"
-              }')" target="_blank">View Aadhar</a></td>
+              <td><a href="#" onclick="viewAadhar('${app.AadharFileID || "N/A"}')" target="_blank">View Aadhar</a></td>
               <td>
                 <select id="status-${app.$id}">
-                  <option value="Pending" ${
-                    app.Status === "Pending" ? "selected" : ""
-                  }>Pending</option>
-                  <option value="Accepted" ${
-                    app.Status === "Accepted" ? "selected" : ""
-                  }>Accepted</option>
-                  <option value="Rejected" ${
-                    app.Status === "Rejected" ? "selected" : ""
-                  }>Rejected</option>
+                  <option value="Pending" ${app.Status === "Pending" ? "selected" : ""}>Pending</option>
+                  <option value="Accepted" ${app.Status === "Accepted" ? "selected" : ""}>Accepted</option>
+                  <option value="Rejected" ${app.Status === "Rejected" ? "selected" : ""}>Rejected</option>
                 </select>
               </td>
               <td>
-                <input type="text" id="remarks-${app.$id}" value="${
-          app.Remarks || ""
-        }" placeholder="Add remarks" />
+                <input type="text" id="remarks-${app.$id}" value="${app.Remarks || ""}" placeholder="Add remarks" />
               </td>
               <td>
-                <button onclick="submitApplication('${
-                  app.$id
-                }')">Submit</button>
+                <button onclick="submitApplication('${app.$id}', '${app.AadharFileID || "N/A"}')">Submit</button>
               </td>
             `;
 
@@ -92,17 +79,17 @@ function displayApplications() {
     .catch((error) => {
       console.error("Failed to fetch applications:", error);
       if (messageElement) {
-        messageElement.textContent =
-          "Failed to fetch applications. Please try again.";
+        messageElement.textContent = "Failed to fetch applications. Please try again.";
       }
     });
 }
 
 // Function to submit application status and remarks
-function submitApplication(applicationId) {
+function submitApplication(applicationId, AadharFileID) {
   const status = document.getElementById(`status-${applicationId}`).value;
   const remarks = document.getElementById(`remarks-${applicationId}`).value;
 
+  // Update the application status and remarks
   databases
     .updateDocument(DATABASE_ID, COLLECTION_ID, applicationId, {
       Status: status,
@@ -110,14 +97,15 @@ function submitApplication(applicationId) {
       Processed: true, // Mark the application as processed
     })
     .then(() => {
-      alert("Application updated successfully!");
+      // If the application is rejected, delete the Aadhar file
+      if (status === "Rejected" && AadharFileID !== "N/A") {
+        deleteAadharFile(AadharFileID);
+      } else {
+        alert("Application updated successfully!");
+      }
 
       // Remove the corresponding row from the table
-      const row = document
-        .querySelector(
-          `button[onclick="submitApplication('${applicationId}')"]`
-        )
-        .closest("tr");
+      const row = document.querySelector(`button[onclick="submitApplication('${applicationId}', '${AadharFileID}')"]`).closest("tr");
       if (row) {
         row.remove(); // Remove the row from the table
       }
@@ -125,6 +113,21 @@ function submitApplication(applicationId) {
     .catch((error) => {
       console.error("Failed to update application:", error);
       alert("Failed to update application.");
+    });
+}
+
+// Function to delete Aadhar file from the bucket
+function deleteAadharFile(AadharFileID) {
+  const bucketId = "67043852000455e53296"; // Your bucket ID
+
+  storage.deleteFile(bucketId, AadharFileID)
+    .then(() => {
+      console.log("Aadhar file deleted successfully.");
+      alert("Aadhar file deleted successfully.");
+    })
+    .catch((error) => {
+      console.error("Failed to delete Aadhar file:", error);
+      alert("Failed to delete Aadhar file.");
     });
 }
 

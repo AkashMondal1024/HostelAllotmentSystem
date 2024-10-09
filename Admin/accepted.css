@@ -1,0 +1,88 @@
+body {
+    font-family: 'Kanit', sans-serif;
+    background-color: #D3C5E5;
+}
+
+.buttons {
+    border-radius: 6px; 
+    border: none; 
+    height: 40px; 
+    background-color: #735DA5;
+    cursor: pointer;
+    font-family: 'Kanit', sans-serif;
+    color: #D3C5E5;
+    font-size: 17px;
+}
+
+.buttons:hover {
+    background: #8a79b0;
+}
+
+.buttons:active {
+    background: #6a44bc;
+}
+
+header {
+    height: 50px;
+    width: auto;
+    background: #735DA5;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #D3C5E5;
+}
+
+.navbar-dark-section {
+    position: absolute;
+    left: 0;
+    width: 220px; 
+    height: 100%;
+    background-color: #443861;
+}
+
+.abcd {
+    display: flex;
+    width: 100%;
+    background-color: #D3C5E5; /* Same as navbar background color */
+    justify-content: space-between;
+}
+
+.dashboard button {
+    margin: 10px 0;
+    width: 80%;
+    background-color: #D3C5E5;
+    color: #D3C5E5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #735DA5;
+}
+
+.dashboard button:hover {
+    background-color: #B4A0E5;
+}
+
+.dashboard button:active {
+    background: #6a44bc;
+    color: white;
+}
+
+.dashboard {
+    width: 220px; /* Updated width */
+    height: 93.5vh; /* Full height of the screen */
+    background-color: #443861;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    width: 84%;
+}
+
+.table {
+    max-width: 100%;
+    overflow-x: auto; /* Allows horizontal scrolling if necessary */
+}

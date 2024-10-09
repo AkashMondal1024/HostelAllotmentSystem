@@ -78,64 +78,122 @@ submitButton.addEventListener("click", function (event) {
     RollNo: rollNumber,
     FamilyAnnualIncome: annualIncome,
     Distance: distance,
+    Processed: false,
+    Status: "Pending",
+    Remarks: null,
   };
 
-  // Upload Aadhar and save the application data
-  if (aadharFile) {
-    uploadAadhar(userId, applicationData, aadharFile);
-  } else {
-    // If no Aadhar file is uploaded, save the application data without it
-    saveApplicationData(userId, applicationData);
-  }
+  // Check if userID exists in the NEW_COLLECTION
+  databases
+    .getDocument(DATABASE_ID, NEW_COLLECTION_ID, userId)
+    .then(() => {
+      // If userID exists, upload the Aadhar file
+      if (aadharFile) {
+        uploadAadhar(userId, applicationData, aadharFile);
+      } else {
+        // If no Aadhar file is uploaded, save the application data without it
+        saveApplicationData(userId, applicationData);
+      }
+    })
+    .catch((error) => {
+      if (error.code === 404) {
+        // If the user does not exist, create the document and upload the file
+        if (aadharFile) {
+          createNewDocumentWithFile(userId, applicationData, aadharFile);
+        } else {
+          // If no Aadhar file is uploaded, save the application data without it
+          saveApplicationData(userId, applicationData);
+        }
+      } else {
+        console.error("Failed to fetch document:", error);
+        document.getElementById("message").textContent =
+          "Failed to fetch document. Please try again.";
+      }
+    });
 });
 
+// Function to upload Aadhar file
 function uploadAadhar(userId, applicationData, aadharFile) {
   const bucketId = "67043852000455e53296"; // Storage bucket ID
-  const aadharFileName = aadharFile.name; // Get the name of the uploaded file
 
   // Check if the file already exists in the bucket
   storage
     .listFiles(bucketId, [Appwrite.Query.equal("$id", userId)])
     .then((filesResponse) => {
       if (filesResponse.total > 0) {
+        // File exists, delete the existing file
         storage
-          .updateFile(bucketId, userId, aadharFileName, aadharFile)
-          .then((fileResponse) => {
-            console.log("Aadhar Updated:", fileResponse);
-
-            applicationData.AadharFileID = fileResponse.$id; // Updated field name
-
-            // Save or update the application data in the new collection
-            saveOrUpdateApplicationData(userId, applicationData);
+          .deleteFile(bucketId, filesResponse.files[0].$id)
+          .then(() => {
+            // After deleting, upload the new file
+            createNewAadharFile(userId, applicationData, aadharFile, bucketId);
           })
           .catch((error) => {
-            console.error("Aadhar Update Failed:", error);
+            console.error("Failed to delete old Aadhar file:", error);
             document.getElementById("message").textContent =
-              "Aadhar Update Failed. Please try again.";
+              "Failed to delete old Aadhar file. Please try again.";
           });
       } else {
-        // File does not exist, create it
-        storage
-          .createFile(bucketId, userId, aadharFile)
-          .then((fileResponse) => {
-            console.log("Aadhar Uploaded:", fileResponse);
-
-            applicationData.AadharFileID = fileResponse.$id; // Updated field name
-
-            // Save the application data to the new collection
-            saveOrUpdateApplicationData(userId, applicationData);
-          })
-          .catch((error) => {
-            console.error("Aadhar Upload Failed:", error);
-            document.getElementById("message").textContent =
-              "Aadhar Upload Failed. Please try again.";
-          });
+        // No existing file, directly upload the new file
+        createNewAadharFile(userId, applicationData, aadharFile, bucketId);
       }
     })
     .catch((error) => {
       console.error("Failed to check existing files:", error);
       document.getElementById("message").textContent =
         "Failed to check existing files. Please try again.";
+    });
+}
+
+function createNewAadharFile(userId, applicationData, aadharFile, bucketId) {
+  storage
+    .createFile(bucketId, userId, aadharFile)
+    .then((fileResponse) => {
+      console.log("Aadhar Uploaded:", fileResponse);
+
+      applicationData.AadharFileID = fileResponse.$id; // Update with new file ID
+
+      // Save or update the application data in the new collection
+      saveOrUpdateApplicationData(userId, applicationData);
+    })
+    .catch((error) => {
+      console.error("Aadhar Upload Failed:", error);
+      document.getElementById("message").textContent =
+        "Aadhar Upload Failed. Please try again.";
+    });
+}
+
+// Function to create a new document with Aadhar file
+function createNewDocumentWithFile(userId, applicationData, aadharFile) {
+  storage
+    .createFile(BUCKET_ID, userId, aadharFile)
+    .then((fileResponse) => {
+      console.log("Aadhar Uploaded:", fileResponse);
+      applicationData.AadharFileID = fileResponse.$id; // Update with new file ID
+
+      // Create the new document in the NEW_COLLECTION
+      databases
+        .createDocument(DATABASE_ID, NEW_COLLECTION_ID, userId, applicationData)
+        .then((response) => {
+          console.log("Application Data Saved:", response);
+          document.getElementById("message").textContent =
+            "Application Submitted Successfully";
+
+          // Redirect to app-status.html after successful submission
+          setTimeout(() => {
+            window.location.href = "app-status.html";
+          }, 1000); // Redirect after 1 second
+        })
+        .catch((error) => {
+          console.error("Failed to save application data:", error);
+          document.getElementById("message").textContent =
+            "Failed to submit application. Please try again.";
+        });
+    })
+    .catch((error) => {
+      console.error("Aadhar Upload Failed:", error);
+      document.getElementById("message").textContent =
+        "Aadhar Upload Failed. Please try again.";
     });
 }
 
@@ -168,12 +226,7 @@ function saveOrUpdateApplicationData(userId, applicationData) {
       if (error.code === 404) {
         // Document does not exist, create it
         databases
-          .createDocument(
-            DATABASE_ID,
-            NEW_COLLECTION_ID,
-            userId,
-            applicationData
-          )
+          .createDocument(DATABASE_ID, NEW_COLLECTION_ID, userId, applicationData)
           .then((response) => {
             console.log("Application Data Saved:", response);
             document.getElementById("message").textContent =
