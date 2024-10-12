@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Accepted Applications</title>
@@ -19,16 +19,28 @@
     <link rel="stylesheet" href="accepted.css" />
     <script src="https://cdn.jsdelivr.net/npm/appwrite@15.0.0"></script>
     <script src="accepted.js" defer></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>Accepted Applications</header>
     <nav
       class="navbar"
-      style="background-color: #d3c5e5; display: flex; justify-content: flex-end; color: white; padding: 7px; align-items: center; border-color: #735da5; border-width: 1px; position: relative;"
+      style="
+        background-color: #d3c5e5;
+        display: flex;
+        justify-content: flex-end;
+        color: white;
+        padding: 7px;
+        align-items: center;
+        border-color: #735da5;
+        border-width: 1px;
+        position: relative;
+      "
     >
       <div class="navbar-dark-section"></div>
-      <span style="margin-left: auto"><button class="buttons">Log Out</button></span>
+      <span style="margin-left: auto"
+        ><button class="buttons">Log Out</button></span
+      >
     </nav>
     <div class="abcd" style="display: flex">
       <div class="dashboard">
@@ -59,8 +71,22 @@
             <!-- Application rows will be inserted here -->
           </tbody>
         </table>
-        <div id="message" class="text-danger"></div> <!-- Error message display -->
+        <div id="message" class="text-danger"></div>
+        <!-- Error message display -->
       </div>
     </div>
-</body>
+
+    <!-- Dialog box for assigning room -->
+    <div id="room-dialog" class="room-dialog" style="display: none">
+      <div class="dialog-content">
+        <span id="close-dialog" class="close-btn">&times;</span>
+        <h5>Assign Room</h5>
+        <label for="room-number">Room Number:</label>
+        <input type="text" id="room-number" class="form-control" />
+        <button id="assign-room-btn" class="btn btn-success mt-3">
+          Assign
+        </button>
+      </div>
+    </div>
+  </body>
 </html>
