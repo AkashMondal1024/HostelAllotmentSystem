@@ -106,6 +106,11 @@ if (!userId) {
             })
             .catch((error) => {
               console.error("Failed to fetch application data:", error);
+              // Enable the New Application button if the appDoc doesn't exist
+              const newAppButton = document.querySelector(".new-app button");
+              newAppButton.addEventListener("click", function () {
+                window.location.href = "app-form.html"; // Redirect to application form
+              });
             });
         })
         .catch((error) => {
