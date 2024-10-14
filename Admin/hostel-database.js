@@ -9,6 +9,19 @@ const databases = new Appwrite.Databases(client);
 
 const DATABASE_ID = '66e4b088002534a2ffe1'; // Your Database ID
 const COLLECTION_ID = '6702577b00162a4bdd41'; // Your Rooms Collection ID
+const STUDENT_COLLECTION_ID = '66e4b098001d3dd600f9'; // Replace with your actual student collection ID
+
+// Function to fetch student names by their IDs
+async function getStudentNameById(studentId) {
+  try {
+    const studentDoc = await databases.getDocument(DATABASE_ID, STUDENT_COLLECTION_ID, studentId);
+    console.log(`Fetched student document for ID: ${studentId}`, studentDoc); // Debugging log
+    return studentDoc.Name; // Check that 'Name' is the correct field in your student collection
+  } catch (error) {
+    console.error(`Error fetching student name for ID: ${studentId}`, error);
+    return 'Unknown'; // Return 'Unknown' if there was an error or the student does not exist
+  }
+}
 
 // Function to fetch all documents with pagination
 async function fetchRoomData() {
@@ -41,14 +54,13 @@ async function fetchRoomData() {
 }
 
 // Function to populate the table with room data
-function populateRoomTable(roomData) {
+async function populateRoomTable(roomData) {
   const roomTableBody = document.getElementById('room-data');
   roomTableBody.innerHTML = '';
 
   let currentFloor = null;
 
-  // Loop through the room data and create table rows
-  roomData.forEach(room => {
+  for (const room of roomData) {
     if (room.Floor !== currentFloor) {
       // Create a floor heading
       const floorHeading = document.createElement('tr');
@@ -59,17 +71,21 @@ function populateRoomTable(roomData) {
       currentFloor = room.Floor;
     }
 
+    // Fetch student names by their IDs
+    const student1Name = room.Student1ID ? await getStudentNameById(room.Student1ID) : 'Vacant';
+    const student2Name = room.Student2ID ? await getStudentNameById(room.Student2ID) : 'Vacant';
+
     // Create the row for the room data
     const row = document.createElement('tr');
     row.innerHTML = `
       <td>${room.RoomNumber}</td>
       <td>${room.Floor}</td>
-      <td>${room.Student1ID ? room.Student1ID : 'Vacant'}</td>
-      <td>${room.Student2ID ? room.Student2ID : 'Vacant'}</td>
+      <td>${student1Name}</td>
+      <td>${student2Name}</td>
     `;
 
     roomTableBody.appendChild(row);
-  });
+  }
 }
 
 document.getElementById('accepted-applications').addEventListener('click', () => {
