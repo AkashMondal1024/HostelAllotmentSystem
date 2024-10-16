@@ -78,6 +78,12 @@ if (!userId) {
         .then((doc) => {
           document.getElementById("room-no").textContent =
             doc.RoomNumber || "N/A";
+          document.getElementById("fan").textContent = doc.Fan || "0";
+          document.getElementById("cupboard").textContent = doc.Cupboard || "0";
+          document.getElementById("bed").textContent = doc.Bed || "0";
+          document.getElementById("mattress").textContent = doc.Mattress || "0";
+          document.getElementById("chair").textContent = doc.Chair || "0";
+          document.getElementById("table").textContent = doc.Table || "0";
         })
         .catch((error) => {
           console.error("Failed to fetch student data:", error);

@@ -92,14 +92,33 @@ td {
   text-align: center;
 }
 
+/* Set the widths for each column */
 th:nth-child(1),
 td:nth-child(1) {
-  width: 10%; /* Reduced Room Number width */
+  width: 15%; /* Room Number */
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+  width: 5%; /* Floor */
 }
 
 th:nth-child(3),
-td:nth-child(3),
+td:nth-child(3) {
+  width: 30%; /* Student 1 Name */
+}
+
 th:nth-child(4),
 td:nth-child(4) {
-  width: 35%; /* Increased width for Student 1 and Student 2 */
+  width: 10%; /* Accessories Button for Student 1 */
+}
+
+th:nth-child(5),
+td:nth-child(5) {
+  width: 30%; /* Student 2 Name */
+}
+
+th:nth-child(6),
+td:nth-child(6) {
+  width: 10%; /* Accessories Button for Student 2 */
 }

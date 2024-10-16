@@ -185,6 +185,6 @@
     setTimeout(() => {
       const spinner = document.getElementById("loadingSpinner");
       spinner.style.display = "none"; // Hide spinner when page is loaded
-    }, 100); // Adjust time as needed
+    }, 2000); // Adjust time as needed
   };
 })();
