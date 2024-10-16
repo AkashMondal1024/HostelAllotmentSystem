@@ -1,4 +1,4 @@
-(function() {
+(function () {
   // Initialize Appwrite SDK
   const client = new Appwrite.Client();
 
@@ -119,9 +119,11 @@
 
       // Pre-fill checkboxes based on accessory data (1 = checked, 0 = unchecked)
       document.getElementById("fan").checked = accessoryData.Fan === 1;
-      document.getElementById("cupboard").checked = accessoryData.Cupboard === 1;
+      document.getElementById("cupboard").checked =
+        accessoryData.Cupboard === 1;
       document.getElementById("bed").checked = accessoryData.Bed === 1;
-      document.getElementById("mattress").checked = accessoryData.Mattress === 1;
+      document.getElementById("mattress").checked =
+        accessoryData.Mattress === 1;
       document.getElementById("table").checked = accessoryData.Table === 1;
       document.getElementById("chair").checked = accessoryData.Chair === 1;
     } catch (error) {
@@ -168,7 +170,7 @@
       // Refresh the page after updating accessories
       location.reload(); // This will refresh the page
     } catch (error) {
-      if (error.message && error.message.includes('404')) {
+      if (error.message && error.message.includes("404")) {
         alert("Student Data Not Found");
       } else {
         console.error("Error updating accessories:", error);
@@ -188,3 +190,7 @@
     }, 2000); // Adjust time as needed
   };
 })();
+
+document.getElementById("accepted-applications").addEventListener("click", function () {
+  window.location.href = "accepted.html";
+});

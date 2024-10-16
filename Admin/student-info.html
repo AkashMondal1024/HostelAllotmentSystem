@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pending Applications</title>
+    <title>Student Info</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,13 +16,13 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="applications.css" />
+    <link rel="stylesheet" href="student-info.css" />
     <script src="https://cdn.jsdelivr.net/npm/appwrite@15.0.0"></script>
-    <script src="applications.js" defer></script>
+    <script src="student-info.js" defer></script>
   </head>
 
   <body>
-    <header>Pending Applications</header>
+    <header>Student Information</header>
     <nav
       class="navbar"
       style="
@@ -54,30 +54,28 @@
         <button class="buttons" id="database">Hostel Database</button>
         <button class="buttons" id="student-info">Student Information</button>
       </div>
-      <div class="container mt-4">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Regn No</th>
-              <th>Roll No</th>
-              <th>Degree</th>
-              <th>Stream</th>
-              <th>Semester</th>
-              <th>Income</th>
-              <th>Distance</th>
-              <th>Aadhar</th>
-              <th>Status</th>
-              <th>Remarks</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="applications-table-body">
-            <!-- Application rows will be inserted here -->
-          </tbody>
-        </table>
-        <div id="message" class="text-danger"></div>
-        <!-- Error message display -->
+      <div>
+        <div class="search-section">
+            <input
+              type="number"
+              id="searchInput"
+              class="form-control"
+              placeholder="Search by Registration Number"
+            />
+            <button id="searchButton" class="buttons">Search</button>
+            <div id="studentDetails" class="student-details" style="display: none">
+              <h3>Student Details</h3>
+              <p><strong>Name:</strong> <span id="studentName"></span></p>
+              <p><strong>Email:</strong> <span id="studentEmail"></span></p>
+              <p><strong>Phone:</strong> <span id="studentPhone"></span></p>
+              <p>
+                <strong>Father's Name:</strong> <span id="studentFatherName"></span>
+              </p>
+              <p>
+                <strong>Mother's Name:</strong> <span id="studentMotherName"></span>
+              </p>
+            </div>
+          </div>
       </div>
     </div>
   </body>
