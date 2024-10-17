@@ -19,15 +19,19 @@ document.getElementById("searchButton").addEventListener("click", async function
         if (response.documents.length > 0) {
             const student = response.documents[0];
             console.log("Student found:", student);
-            
-            // Display student details
             document.getElementById("studentDetails").style.display = "block";
             document.getElementById("studentName").innerText = student.Name;
             document.getElementById("studentEmail").innerText = student.Email;
             document.getElementById("studentPhone").innerText = student.Phone;
             document.getElementById("studentFatherName").innerText = student.FatherName;
             document.getElementById("studentMotherName").innerText = student.MotherName;
-            // Add more fields as needed
+            document.getElementById("degree").innerText = student.Degree;
+            document.getElementById("stream").innerText = student.Stream;
+            document.getElementById("semester").innerText = student.Semester;
+            document.getElementById("dob").innerText = student.DOB;
+            document.getElementById("regn").innerText = student.RegistrationNumber;
+            document.getElementById("roll").innerText = student.RollNo;
+            document.getElementById("degree").innerText = student.Degree;
         } else {
             console.log("No student found with this registration number.");
             alert("No student found with this registration number.");
