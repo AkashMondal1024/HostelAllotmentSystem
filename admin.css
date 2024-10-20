@@ -1,58 +1,77 @@
-header{
-    height: 50px;
-    width: auto;
-    background: #735DA5;
-    font-size: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #D3C5E5;
-    font-family: 'Kanit',sans-serif;
+header {
+  height: 50px;
+  width: auto;
+  background: #735da5;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d3c5e5;
+  font-family: "Kanit", sans-serif;
 }
-body{
-    font-family: 'Kanit',sans-serif;
-    background-color: #D3C5E5;
+body {
+  font-family: "Kanit", sans-serif;
+  background-color: #d3c5e5;
 }
-form{
-    width: 24%;
-    padding: 50px;
-    border-radius: 20px;
-    margin-top: 120px;
-    background-color: #735DA5;
-    color: #D3C5E5;
+form {
+  width: 24%;
+  padding: 50px;
+  border-radius: 20px;
+  margin-top: 120px;
+  background-color: #735da5;
+  color: #d3c5e5;
 }
-.btn-primary{
-    width: 100%;
-    border: none;
-    border-radius: 7px;
-    background-color: #d8c6ef;
-    color: #735DA5;
-    /* margin-top: 17px; */
+.btn-primary {
+  width: 100%;
+  border: none;
+  border-radius: 7px;
+  background-color: #d8c6ef;
+  color: #735da5;
+  /* margin-top: 17px; */
 }
-.btn-primary:hover{
-    background-color: #d1b3f8;
-    color: #735DA5;
+.btn-primary:hover {
+  background-color: #d1b3f8;
+  color: #735da5;
 }
-.mt-5{
-    margin-top: 40px;
+.mt-5 {
+  margin-top: 40px;
 }
-.text-center{
-    justify-content: center;
-    font-size: 30px;
+.text-center {
+  justify-content: center;
+  font-size: 30px;
 }
 
-.form-text{
-    color: #d8c6ef;
+.form-text {
+  color: #d8c6ef;
 }
-.text-center-2{
-    justify-content: center;
+.text-center-2 {
+  justify-content: center;
 }
-a{
-    color: rgb(156, 240, 156);
+a {
+  color: rgb(156, 240, 156);
 }
-a:hover{
-    color: rgb(236, 241, 236);
+a:hover {
+  color: rgb(236, 241, 236);
 }
-a:active{
-    color: rgb(217, 240, 85);
+a:active {
+  color: rgb(217, 240, 85);
+}
+
+.home-button {
+  position: absolute;
+  top: 60px;
+  left: 10px;
+}
+
+.home-button i {
+  color: #735da5;
+  transition: color 0.2s ease;
+}
+
+.home-button i:hover {
+  color: #9489ad;
+}
+
+.home-button i:active {
+  color: #4f05e1;
 }

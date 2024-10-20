@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(() => {
         // Clear local storage (if needed)
         localStorage.removeItem("userID");
-        
+
         // Redirect to the login page
         window.location.href = "student.html";
       })
@@ -35,21 +35,21 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// Initialize Appwrite SDK
 const client = new Appwrite.Client();
 
 client
-  .setEndpoint("https://cloud.appwrite.io/v1") // Your Appwrite endpoint
-  .setProject("66cfe746002e495cbc84"); // Your project ID
+  .setEndpoint("https://cloud.appwrite.io/v1")
+  .setProject("66cfe746002e495cbc84");
 
 const account = new Appwrite.Account(client);
 const databases = new Appwrite.Databases(client);
-const storage = new Appwrite.Storage(client); // Storage client for fetching images
+const storage = new Appwrite.Storage(client);
 
 // Constants for database and collection IDs
 const DATABASE_ID = "66e4b088002534a2ffe1";
 const COLLECTION_ID = "66e4b098001d3dd600f9";
-const BUCKET_ID = "66edbc16003335ab378a"; // Your bucket ID for images
+const BUCKET_ID = "66edbc16003335ab378a";
+const NOTICE_COLLECTION_ID = "6713e5b4003851327d19";
 
 // Get user ID from local storage
 const userId = localStorage.getItem("userID");
@@ -100,3 +100,42 @@ if (!userId) {
       document.getElementById("name").textContent = "Failed to load name.";
     });
 }
+
+databases
+  .listDocuments(DATABASE_ID, NOTICE_COLLECTION_ID)
+  .then(function (response) {
+    const notices = response.documents;
+    const noticeArea = document.getElementById("notice-area");
+    noticeArea.innerHTML = "";
+
+    notices.forEach(function (notice) {
+      const noticeDiv = document.createElement("div");
+      noticeDiv.className = "notice";
+
+      const noticeTitle = document.createElement("h4");
+      noticeTitle.textContent = notice.Title;
+      noticeTitle.style.textAlign = "center";
+
+      const noticeDate = document.createElement("small");
+      noticeDate.style.fontSize = "0.86em";
+      noticeDate.style.display = "block";
+      noticeDate.textContent = notice.Date;
+      noticeDate.style.fontWeight = "bold";
+
+      const noticeContent = document.createElement("p");
+      noticeContent.textContent = notice.Content;
+      noticeContent.style.fontSize = "1.05em";
+      noticeContent.style.textAlign = "justify";
+
+      noticeDiv.appendChild(noticeTitle);
+      noticeDiv.appendChild(noticeDate);
+      noticeDiv.appendChild(noticeContent);
+
+      noticeArea.appendChild(noticeDiv);
+      const hr = document.createElement("hr");
+      noticeArea.appendChild(hr);
+    });
+  })
+  .catch(function (error) {
+    console.error("Error fetching notices:", error);
+  });

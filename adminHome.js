@@ -5,41 +5,59 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("profile").addEventListener("click", function () {
     window.location.href = "Admin/admin-profile.html";
   });
-  document.getElementById("applications").addEventListener("click", function () {
-    window.location.href = "Admin/applications.html";
-  });
+  document
+    .getElementById("applications")
+    .addEventListener("click", function () {
+      window.location.href = "Admin/applications.html";
+    });
   document.getElementById("accepted").addEventListener("click", function () {
     window.location.href = "Admin/accepted.html";
   });
   document.getElementById("database").addEventListener("click", function () {
     window.location.href = "Admin/hostel-database.html";
   });
-  document.getElementById("student-info").addEventListener("click", function () {
-    window.location.href = "Admin/student-info.html";
-  });
+  document
+    .getElementById("student-info")
+    .addEventListener("click", function () {
+      window.location.href = "Admin/student-info.html";
+    });
   document.getElementById("gen-notice").addEventListener("click", function () {
     window.location.href = "Admin/notice.html";
   });
 
-  // Appwrite setup
+  // Initialize Appwrite Client
   const client = new Appwrite.Client();
   client
     .setEndpoint("https://cloud.appwrite.io/v1")
     .setProject("66cfe746002e495cbc84");
 
-  const databases = new Appwrite.Databases(client);
+  // Initialize Account Service
+  const account = new Appwrite.Account(client);
 
+  document.getElementById("logout").addEventListener("click", function () {
+    account
+      .deleteSession("current")
+      .then(() => {
+        localStorage.removeItem("userID");
+        window.location.href = "admin.html";
+      })
+      .catch((error) => {
+        console.error("Logout failed:", error);
+      });
+  });
+
+  const databases = new Appwrite.Databases(client);
   const DATABASE_ID = "66e4b088002534a2ffe1";
   const NOTICE_COLLECTION_ID = "6713e5b4003851327d19";
 
-  databases.listDocuments(DATABASE_ID, NOTICE_COLLECTION_ID)
+  databases
+    .listDocuments(DATABASE_ID, NOTICE_COLLECTION_ID)
     .then(function (response) {
       const notices = response.documents;
       const noticeArea = document.getElementById("notice-area");
-      noticeArea.innerHTML = '';
+      noticeArea.innerHTML = "";
 
       notices.forEach(function (notice) {
-
         const noticeDiv = document.createElement("div");
         noticeDiv.className = "notice";
 
@@ -50,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const noticeDate = document.createElement("small");
         noticeDate.style.fontSize = "0.86em";
         noticeDate.style.display = "block";
-        noticeDate.textContent = notice.Date; 
+        noticeDate.textContent = notice.Date;
         noticeDate.style.fontWeight = "bold";
 
         const noticeContent = document.createElement("p");

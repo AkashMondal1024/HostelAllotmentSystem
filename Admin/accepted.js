@@ -7,6 +7,9 @@ client
 
 const databases = new Appwrite.Databases(client);
 
+// Initialize Account Service
+const account = new Appwrite.Account(client);
+
 // Constants for database and collection IDs
 const DATABASE_ID = "66e4b088002534a2ffe1";
 const COLLECTION_ID = "670257ac0031bc7067ce";
@@ -15,7 +18,9 @@ const ROOMS_COLLECTION_ID = "6702577b00162a4bdd41"; // Rooms collection ID
 
 // Fetch and display accepted applications
 function displayAcceptedApplications() {
-  const applicationsTableBody = document.getElementById("applications-table-body");
+  const applicationsTableBody = document.getElementById(
+    "applications-table-body"
+  );
   const messageElement = document.getElementById("message");
 
   applicationsTableBody.innerHTML = ""; // Clear table before adding new rows
@@ -53,7 +58,9 @@ function displayAcceptedApplications() {
           <td>${app.Stream || "N/A"}</td>
           <td>${app.Semester || "N/A"}</td>
           <td>
-            <button class="assign-room-btn btn btn-primary" data-app-id="${app.$id}">
+            <button class="assign-room-btn btn btn-primary" data-app-id="${
+              app.$id
+            }">
               Assign Room
             </button>
           </td>
@@ -89,7 +96,9 @@ function openRoomDialog(applicationId) {
     const roomNumber = parseInt(document.getElementById("room-number").value);
 
     if (!roomNumber || roomNumber < 101 || roomNumber > 450) {
-      alert("Invalid Room Number. Please enter a valid room number between 101 and 450.");
+      alert(
+        "Invalid Room Number. Please enter a valid room number between 101 and 450."
+      );
       return;
     }
 
@@ -103,7 +112,7 @@ function openRoomDialog(applicationId) {
       .catch((error) => {
         if (error.code === 404) {
           // Student not found in Student Rooms Info, proceed with room assignment
-          
+
           // Retrieve the student name from the Applications collection
           databases
             .getDocument(DATABASE_ID, COLLECTION_ID, applicationId)
@@ -113,7 +122,11 @@ function openRoomDialog(applicationId) {
 
               // Check if the room exists in the Rooms collection
               databases
-                .getDocument(DATABASE_ID, ROOMS_COLLECTION_ID, roomNumber.toString())
+                .getDocument(
+                  DATABASE_ID,
+                  ROOMS_COLLECTION_ID,
+                  roomNumber.toString()
+                )
                 .then((roomResponse) => {
                   const { Student1ID, Student2ID } = roomResponse;
 
@@ -133,7 +146,12 @@ function openRoomDialog(applicationId) {
 
                   // Update the room document with the new student ID
                   databases
-                    .updateDocument(DATABASE_ID, ROOMS_COLLECTION_ID, roomNumber.toString(), updates)
+                    .updateDocument(
+                      DATABASE_ID,
+                      ROOMS_COLLECTION_ID,
+                      roomNumber.toString(),
+                      updates
+                    )
                     .then(() => {
                       // Create a new document in the Student Rooms Info collection
                       databases
@@ -148,11 +166,15 @@ function openRoomDialog(applicationId) {
                           }
                         )
                         .then(() => {
-                          alert(`Room ${roomNumber} assigned to ${studentName}`);
+                          alert(
+                            `Room ${roomNumber} assigned to ${studentName}`
+                          );
                           closeRoomDialog(); // Close the dialog after assignment
 
                           // Update the "Assign Room" button text to "Already Assigned"
-                          const assignRoomButton = document.querySelector(`button[data-app-id="${applicationId}"]`);
+                          const assignRoomButton = document.querySelector(
+                            `button[data-app-id="${applicationId}"]`
+                          );
                           if (assignRoomButton) {
                             assignRoomButton.textContent = "Already Assigned";
                             assignRoomButton.disabled = true;
@@ -160,14 +182,24 @@ function openRoomDialog(applicationId) {
 
                           // Update the 'Assigned' attribute in the Applications collection to true
                           databases
-                            .updateDocument(DATABASE_ID, COLLECTION_ID, applicationId, {
-                              Assigned: true,
-                            })
+                            .updateDocument(
+                              DATABASE_ID,
+                              COLLECTION_ID,
+                              applicationId,
+                              {
+                                Assigned: true,
+                              }
+                            )
                             .then(() => {
-                              console.log(`'Assigned' attribute updated to true for ${studentName}`);
+                              console.log(
+                                `'Assigned' attribute updated to true for ${studentName}`
+                              );
                             })
                             .catch((error) => {
-                              console.error("Failed to update 'Assigned' attribute:", error);
+                              console.error(
+                                "Failed to update 'Assigned' attribute:",
+                                error
+                              );
                             });
                         })
                         .catch((error) => {
@@ -182,16 +214,22 @@ function openRoomDialog(applicationId) {
                 })
                 .catch((error) => {
                   console.error("Failed to retrieve room data:", error);
-                  alert("Failed to retrieve room information. Please try again.");
+                  alert(
+                    "Failed to retrieve room information. Please try again."
+                  );
                 });
             })
             .catch((error) => {
               console.error("Failed to retrieve student data:", error);
-              alert("Failed to retrieve student information. Please try again.");
+              alert(
+                "Failed to retrieve student information. Please try again."
+              );
             });
         } else {
           console.error("Failed to check student room assignment:", error);
-          alert("An error occurred while checking room assignment. Please try again.");
+          alert(
+            "An error occurred while checking room assignment. Please try again."
+          );
         }
       });
   };
@@ -228,14 +266,25 @@ function attachAssignRoomListeners() {
   });
 }
 
-// Initialize when DOM is ready
 document.addEventListener("DOMContentLoaded", function () {
-  displayAcceptedApplications(); // Fetch applications
+  displayAcceptedApplications(); 
 
-  // Close dialog event listener
   document
     .getElementById("close-dialog")
     .addEventListener("click", closeRoomDialog);
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("logout").addEventListener("click", function () {
+    account
+      .deleteSession("current") 
+      .then(() => {
+        window.location.href = "../admin.html"; 
+      })
+      .catch((error) => {
+        console.error("Logout failed:", error);
+      });
+  });
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -265,3 +314,4 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location.href = "notice.html";
   });
 });
+
