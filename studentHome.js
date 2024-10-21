@@ -105,6 +105,7 @@ databases
   .listDocuments(DATABASE_ID, NOTICE_COLLECTION_ID)
   .then(function (response) {
     const notices = response.documents;
+    notices.reverse();
     const noticeArea = document.getElementById("notice-area");
     noticeArea.innerHTML = "";
 

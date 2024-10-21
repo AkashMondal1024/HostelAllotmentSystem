@@ -125,3 +125,9 @@ header{
 .form-control-date{
     width: 300px;
 }
+
+.form-control{
+    border: solid;
+    border-color: #383639;
+    border-width: 2px;
+}
