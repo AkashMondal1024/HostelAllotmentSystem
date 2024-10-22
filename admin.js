@@ -37,8 +37,8 @@ function login() {
   account
     .createEmailPasswordSession(email, password)
     .then((response) => {
-      // Fetch user profile from the database after successful login
-      fetchUserProfile(response.userId); // Validate profile before proceeding
+      localStorage.setItem("userID", response.userId);
+      fetchUserProfile(response.userId);
     })
     .catch((error) => {
       console.error("Login Failed", error);
@@ -59,25 +59,25 @@ function fetchUserProfile(userId) {
     .get() // Get the session to check user label
     .then((session) => {
       console.log("Session Data: ", session);
-      
+
       // Assuming the session data contains roles or labels for the user
       // Check if the user's label is "admin"
-      if (session.labels && session.labels.includes('admin')) {
+      if (session.labels && session.labels.includes("admin")) {
         console.log("User is an admin. Redirecting to adminHome.");
         document.getElementById("message").textContent = "Login Successful";
         localStorage.setItem("userID", userId);
         window.location.href = "adminHome.html";
       } else {
         console.log("User is not an admin.");
-        document.getElementById("message").textContent = "Access Denied. Only admins can log in.";
-        account.deleteSession('current'); // Log out the user if they are not an admin
+        document.getElementById("message").textContent =
+          "Access Denied. Only admins can log in.";
+        account.deleteSession("current"); // Log out the user if they are not an admin
       }
     })
     .catch((error) => {
       console.error("Failed to verify label from session data:", error);
-      document.getElementById("message").textContent = "Error: Unable to verify label.";
-      account.deleteSession('current'); // Log out the user if the profile check fails
+      document.getElementById("message").textContent =
+        "Error: Unable to verify label.";
+      account.deleteSession("current"); // Log out the user if the profile check fails
     });
 }
-
-
