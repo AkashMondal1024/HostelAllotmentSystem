@@ -1,0 +1,170 @@
+body {
+  font-family: "Kanit", sans-serif;
+  background-color: #d3c5e5;
+}
+.buttons {
+  border-radius: 6px;
+  border: none;
+  height: 40px;
+  background-color: #735da5;
+  cursor: pointer;
+  font-family: "Kanit", sans-serif;
+  color: #d3c5e5;
+  font-size: 17px;
+}
+.buttons:hover {
+  background: #8a79b0;
+}
+.buttons:active {
+  background: #6a44bc;
+}
+header {
+  height: 50px;
+  width: auto;
+  background: #735da5;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d3c5e5;
+}
+.navbar-dark-section {
+  position: absolute;
+  left: 0;
+  width: 220px;
+  height: 100%;
+  background-color: #443861;
+}
+.abcd {
+  display: flex;
+  width: 100%;
+  background-color: #d3c5e5; /* Same as navbar background color */
+  /* flex-grow: 1; */
+  justify-content: space-between;
+}
+.dashboard button {
+  margin: 10px 0;
+  width: 80%;
+  background-color: #d3c5e5;
+  color: #d3c5e5;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #735da5;
+}
+.dashboard button:hover {
+  background-color: #b4a0e5;
+}
+.dashboard button:active {
+  background: #6a44bc;
+  color: white;
+}
+.dashboard {
+  width: 220px; /* Updated width */
+  height: 93.5vh; /* Full height of the screen */
+  background-color: #443861;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.all-info-container {
+  display: flex;
+  justify-content: space-between;
+  width: 1150px;
+  margin-right: 100px;
+  align-items: center;
+  height: 570px;
+}
+
+.content {
+  padding: 20px;
+}
+
+.each-text {
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px; /* Optional: adds space between each row */
+  border-color: #735da5;
+  border-width: 1px;
+  border-style: solid;
+  margin: 14px;
+}
+
+.label {
+  font-weight: 500;
+  margin-right: 1px; /* Adjust the space between label and value if needed */
+  margin: 6px;
+}
+
+.value {
+  font-weight: 300;
+  margin: 6px;
+}
+
+.student-image {
+  height: 190px;
+  width: auto;
+}
+
+.value-add {
+  font-weight: 300;
+  margin: 6px;
+  font-size: 12px;
+}
+
+.complaint-box {
+  width: 50%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f4f4f9;
+  border-radius: 8px;
+  background-color: #735DA5;
+  border: solid;
+  border-color: #3b304a;
+  border-width: 2.2px;
+  margin-top: 100px;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+}
+
+label {
+  margin-bottom: 8px;
+  display: block;
+}
+
+textarea,
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #d3c5e5;
+  color: #6a51a4;
+}
+
+button {
+  width: 30%;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.complaint-text{
+  color: #cbc1d8;
+  font-size: 19px;
+}

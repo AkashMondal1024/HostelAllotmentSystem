@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Complaint Box</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="complaint.css" />
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@15.0.0"></script>
+  </head>
+
+  <body>
+    <header>Complaint Box</header>
+    <nav
+      class="navbar"
+      style="
+        background-color: #d3c5e5;
+        display: flex;
+        justify-content: flex-end;
+        color: white;
+        padding: 7px;
+        align-items: center;
+        border-color: #735da5;
+        border-width: 1px;
+        position: relative;
+      "
+    >
+      <div class="navbar-dark-section"></div>
+    </nav>
+    <div class="abcd" style="display: flex">
+      <div class="dashboard">
+        <button class="buttons">Dashboard</button>
+        <button class="buttons">Profile</button>
+        <button class="buttons">Application Status</button>
+        <button class="buttons">Room Details</button>
+        <button class="buttons">Canteen Facilities</button>
+        <button class="buttons">Online Payment</button>
+        <button class="buttons">Feedback</button>
+      </div>
+      <div class="all-info-container">
+        <div class="complaint-box">
+          <form id="complaintForm">
+            <label for="complaintType" class="complaint-text"
+              >Complaint Type:</label
+            >
+            <select id="complaintType" name="complaintType" required>
+              <option value="Maintenance">Maintenance</option>
+              <option value="Facilities">Facilities</option>
+              <option value="Noise">Noise</option>
+              <option value="Cleanliness">Cleanliness</option>
+              <option value="Other">Other</option>
+            </select>
+            <label for="description" class="complaint-text"
+              >Describe the Issue:</label
+            >
+            <textarea
+              id="description"
+              name="description"
+              rows="4"
+              placeholder="Explain your issue here..."
+              required
+            ></textarea>
+            <label for="roomNumber" class="complaint-text">Room Number:</label>
+            <input type="text" id="roomNumber" name="roomNumber" readonly />
+            <label for="date" class="complaint-text">Date:</label>
+            <input type="text" id="date" name="date" readonly />
+            <button type="submit" id="submit-complaint">
+              Submit Complaint
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="complaint.js"></script>
+  </body>
+</html>
