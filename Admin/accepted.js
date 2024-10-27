@@ -267,7 +267,7 @@ function attachAssignRoomListeners() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  displayAcceptedApplications(); 
+  displayAcceptedApplications();
 
   document
     .getElementById("close-dialog")
@@ -277,9 +277,9 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("logout").addEventListener("click", function () {
     account
-      .deleteSession("current") 
+      .deleteSession("current")
       .then(() => {
-        window.location.href = "../admin.html"; 
+        window.location.href = "../admin.html";
       })
       .catch((error) => {
         console.error("Logout failed:", error);
@@ -313,5 +313,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("gen-notice").addEventListener("click", function () {
     window.location.href = "notice.html";
   });
+  document.getElementById("complaints").addEventListener("click", function () {
+    window.location.href = "complaints.html";
+  });
 });
-

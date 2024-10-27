@@ -24,6 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("gen-notice").addEventListener("click", function () {
     window.location.href = "Admin/notice.html";
   });
+  document.getElementById("complaints").addEventListener("click", function () {
+    window.location.href = "Admin/complaints.html";
+  });
 
   const client = new Appwrite.Client();
   client

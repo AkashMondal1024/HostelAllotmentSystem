@@ -14,7 +14,9 @@ const COLLECTION_ID = "670257ac0031bc7067ce";
 
 // Function to fetch and display applications
 function displayApplications() {
-  const applicationsTableBody = document.getElementById("applications-table-body");
+  const applicationsTableBody = document.getElementById(
+    "applications-table-body"
+  );
   const messageElement = document.getElementById("message");
 
   // Clear the table body before adding new rows
@@ -56,19 +58,31 @@ function displayApplications() {
               <td>${app.Semester || "N/A"}</td>
               <td>${app.FamilyAnnualIncome || "N/A"}</td>
               <td>${app.Distance || "N/A"}</td>
-              <td><a href="#" onclick="viewAadhar('${app.AadharFileID || "N/A"}')" target="_blank">View Aadhar</a></td>
+              <td><a href="#" onclick="viewAadhar('${
+                app.AadharFileID || "N/A"
+              }')" target="_blank">View Aadhar</a></td>
               <td>
                 <select id="status-${app.$id}">
-                  <option value="Pending" ${app.Status === "Pending" ? "selected" : ""}>Pending</option>
-                  <option value="Accepted" ${app.Status === "Accepted" ? "selected" : ""}>Accepted</option>
-                  <option value="Rejected" ${app.Status === "Rejected" ? "selected" : ""}>Rejected</option>
+                  <option value="Pending" ${
+                    app.Status === "Pending" ? "selected" : ""
+                  }>Pending</option>
+                  <option value="Accepted" ${
+                    app.Status === "Accepted" ? "selected" : ""
+                  }>Accepted</option>
+                  <option value="Rejected" ${
+                    app.Status === "Rejected" ? "selected" : ""
+                  }>Rejected</option>
                 </select>
               </td>
               <td>
-                <input type="text" id="remarks-${app.$id}" value="${app.Remarks || ""}" placeholder="Add remarks" />
+                <input type="text" id="remarks-${app.$id}" value="${
+          app.Remarks || ""
+        }" placeholder="Add remarks" />
               </td>
               <td>
-                <button onclick="submitApplication('${app.$id}', '${app.AadharFileID || "N/A"}')">Submit</button>
+                <button onclick="submitApplication('${app.$id}', '${
+          app.AadharFileID || "N/A"
+        }')">Submit</button>
               </td>
             `;
 
@@ -79,7 +93,8 @@ function displayApplications() {
     .catch((error) => {
       console.error("Failed to fetch applications:", error);
       if (messageElement) {
-        messageElement.textContent = "Failed to fetch applications. Please try again.";
+        messageElement.textContent =
+          "Failed to fetch applications. Please try again.";
       }
     });
 }
@@ -105,7 +120,11 @@ function submitApplication(applicationId, AadharFileID) {
       }
 
       // Remove the corresponding row from the table
-      const row = document.querySelector(`button[onclick="submitApplication('${applicationId}', '${AadharFileID}')"]`).closest("tr");
+      const row = document
+        .querySelector(
+          `button[onclick="submitApplication('${applicationId}', '${AadharFileID}')"]`
+        )
+        .closest("tr");
       if (row) {
         row.remove(); // Remove the row from the table
       }
@@ -120,7 +139,8 @@ function submitApplication(applicationId, AadharFileID) {
 function deleteAadharFile(AadharFileID) {
   const bucketId = "67043852000455e53296"; // Your bucket ID
 
-  storage.deleteFile(bucketId, AadharFileID)
+  storage
+    .deleteFile(bucketId, AadharFileID)
     .then(() => {
       console.log("Aadhar file deleted successfully.");
       alert("Aadhar file deleted successfully.");
@@ -180,5 +200,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   document.getElementById("gen-notice").addEventListener("click", function () {
     window.location.href = "notice.html";
+  });
+  document.getElementById("complaints").addEventListener("click", function () {
+    window.location.href = "complaints.html";
   });
 });
