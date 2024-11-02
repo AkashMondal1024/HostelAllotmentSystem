@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded",function(){
       });
     });
     btn[1].addEventListener("click",function(){
-        window.location.href="../studentHomePage.html";
+        window.location.href="../studentHome.html";
     });
     btn[2].addEventListener("click",function(){
         window.location.href="student-profile.html";

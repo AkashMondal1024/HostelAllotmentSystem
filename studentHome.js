@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   var btn = document.getElementsByClassName("buttons");
-
+  var logoutBtn = document.getElementsByClassName("logout-button");
   // Logout button logic
-  btn[0].addEventListener("click", function () {
+  logoutBtn[0].addEventListener("click", function () {
     account
       .deleteSession("current")
       .then(() => {
@@ -18,19 +18,19 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Other navigation buttons
-  btn[1].addEventListener("click", function () {
-    window.location.href = "studentHomePage.html";
+  btn[0].addEventListener("click", function () {
+    window.location.href = "studentHome.html";
   });
-  btn[2].addEventListener("click", function () {
+  btn[1].addEventListener("click", function () {
     window.location.href = "Student/student-profile.html";
   });
-  btn[3].addEventListener("click", function () {
+  btn[2].addEventListener("click", function () {
     window.location.href = "Student/app-status.html";
   });
-  btn[4].addEventListener("click", function () {
+  btn[3].addEventListener("click", function () {
     window.location.href = "Student/room-details.html";
   });
-  btn[5].addEventListener("click", function () {
+  btn[4].addEventListener("click", function () {
     window.location.href = "Student/canteen.html";
   });
 });
@@ -140,3 +140,24 @@ databases
   .catch(function (error) {
     console.error("Error fetching notices:", error);
   });
+
+function updateDateTime() {
+  const datetimeDisplay = document.getElementById("datetime-display");
+  const now = new Date();
+
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  };
+
+  datetimeDisplay.textContent = now.toLocaleString("en-US", options);
+}
+
+// Update every second
+setInterval(updateDateTime, 1000);
+updateDateTime();
