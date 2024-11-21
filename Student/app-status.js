@@ -3,37 +3,22 @@ document.addEventListener("DOMContentLoaded", function () {
   var btn = document.getElementsByClassName("buttons");
 
   btn[0].addEventListener("click", function () {
-    account
-      .deleteSession("current")
-      .then(() => {
-        // Clear local storage (if needed)
-        localStorage.removeItem("userID");
-
-        // Redirect to the login page
-        window.location.href = "../student.html";
-      })
-      .catch((error) => {
-        console.error("Logout failed:", error);
-      });
-  });
-
-  btn[1].addEventListener("click", function () {
     window.location.href = "../studentHome.html";
   });
 
-  btn[2].addEventListener("click", function () {
+  btn[1].addEventListener("click", function () {
     window.location.href = "student-profile.html";
   });
 
-  btn[3].addEventListener("click", function () {
+  btn[2].addEventListener("click", function () {
     window.location.href = "app-status.html";
   });
 
-  btn[4].addEventListener("click", function () {
+  btn[3].addEventListener("click", function () {
     window.location.href = "room-details.html";
   });
 
-  btn[5].addEventListener("click", function () {
+  btn[4].addEventListener("click", function () {
     window.location.href = "canteen.html";
   });
 });
@@ -80,6 +65,7 @@ if (!userId) {
           document.getElementById("semester").textContent =
             doc.Semester || "N/A";
           document.getElementById("roll").textContent = doc.RollNo || "N/A";
+          document.getElementById("dob").textContent = doc.DOB || "N/A";
 
           // Fetch application status
           databases
@@ -91,7 +77,7 @@ if (!userId) {
                 appDoc.Remarks || "-";
 
               // Disable New Application button if status is pending or accepted
-              const newAppButton = document.querySelector(".new-app button");
+              const newAppButton = document.getElementById("submit_button");
               if (appDoc.Status === "Pending") {
                 newAppButton.disabled = true;
                 newAppButton.textContent = "Application Pending";
@@ -122,3 +108,22 @@ if (!userId) {
       document.getElementById("name").textContent = "Failed to load name.";
     });
 }
+
+function updateDateTime() {
+  const datetimeDisplay = document.getElementById("datetime-display");
+  const now = new Date();
+
+  const day = now.toLocaleString("en-US", { weekday: "long" });
+  const date = now.toLocaleDateString("en-GB"); // DD/MM/YYYY
+  const time = now.toLocaleString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+  datetimeDisplay.innerHTML = `${day}<br>${date}<br>${time}`;
+}
+
+// Update every second
+setInterval(updateDateTime, 1000);
+updateDateTime();

@@ -1,86 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Application Status</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="app-status.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:wght@400;500;700&display=swap"
-        rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="app-status.css">
+      href="https://fonts.googleapis.com/css2?family=Kanit:wght@100;400;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/appwrite@15.0.0"></script>
-</head>
-
-<body>
-    <header>Application Status</header>
-    <nav class="navbar"
-        style="background-color: #D3C5E5; display: flex; justify-content:  flex-end; color: white; padding: 7px; align-items: center; border-color: #735DA5; border-width: 1px; position: relative;">
-        <div class="navbar-dark-section"></div>
-        <span style="margin-left: auto;"><button class="buttons">Log Out</button></span>
-    </nav>
-    <div class="abcd" style="display: flex;">
-        <div class="dashboard">
-            <button class="buttons">Dashboard</button>
-            <button class="buttons">Profile</button>
-            <button class="buttons">Application Status</button>
-            <button class="buttons">Room Details</button>
-            <button class="buttons">Canteen Facilities</button>
-            <button class="buttons">Online Payment</button>
-            <button class="buttons">Feedback</button>
-            <!-- <button class="buttons">Edit Form</button> -->
-        </div>
-        <div class="all-info-container">
-            <div class="content">
-                <section>
-                    <div class="each-text">
-                        <span class="label">Name:</span>
-                        <span class="value" id="name">Bruce Wayne</span>
-                    </div>
-                    <div class="each-text">
-                        <span class="label">Father's Name:</span>
-                        <span class="value" id="father-name">Thomas Wayne</span>
-                    </div>
-                    <div class="each-text">
-                        <span class="label">Degree:</span>
-                        <span class="value" id="degree">Bachelor of Technology</span>
-                    </div>
-                    <div class="each-text">
-                        <span class="label">Stream:</span>
-                        <span class="value" id="stream">Computer Science</span>
-                    </div>
-                    <div class="each-text">
-                        <span class="label">Semester:</span>
-                        <span class="value" id="semester">V</span>
-                    </div>
-                    <div class="each-text">
-                        <span class="label">Registration Number:</span>
-                        <span class="value" id="regn-no">1234567890</span>
-                    </div>
-                    <div class="each-text">
-                        <span class="label">Roll Number:</span>
-                        <span class="value" id="roll">1234567</span>
-                    </div>
-                    <div class="each-text">
-                        <span class="label">Application Status:</span>
-                        <span class="value" id="status">-</span>
-                    </div>
-                    <div class="each-text">
-                        <span class="label">Remarks:</span>
-                        <span class="value" id="remarks">-</span>
-                    </div>
-                    <div class="new-app">
-                        <button class="buttons" id="new-application">New Application Form</button>
-                    </div>
-                </section>
-            </div>
-        </div>
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="datetime-display" id="datetime-display">Loading...</div>
+      <button class="buttons">Dashboard</button>
+      <button class="buttons">Profile</button>
+      <button class="buttons">Application Status</button>
+      <button class="buttons">Room Details</button>
+      <button class="buttons">Canteen Facilities</button>
+      <button class="buttons">Online Payment</button>
+      <button class="buttons">Complaint Box</button>
     </div>
-    <script type="module" src="app-status.js"></script>
-</body>
 
+    <div class="main-content">
+      <div class="column">
+        <div class="each-text">
+          <span class="label">Name:</span>
+          <span class="value" id="name"></span>
+        </div>
+        <hr />
+        <div class="each-text">
+          <span class="label">Father's Name:</span>
+          <span class="value" id="father-name"></span>
+        </div>
+        <hr />
+        <div class="each-text">
+          <span class="label">Degree:</span>
+          <span class="value" id="degree"></span>
+        </div>
+        <hr />
+        <div class="each-text">
+          <span class="label">Stream:</span>
+          <span class="value" id="stream"></span>
+        </div>
+        <hr />
+        <div class="each-text">
+          <span class="label">Semester:</span>
+          <span class="value" id="semester"></span>
+        </div>
+        <hr />
+        <div class="each-text">
+          <span class="label">Date of Birth:</span>
+          <span class="value" id="dob"></span>
+        </div>
+        <hr />
+        <div class="each-text">
+          <span class="label">Registration Number:</span>
+          <span class="value" id="regn-no"></span>
+        </div>
+        <hr />
+        <div class="each-text">
+          <span class="label">Roll Number:</span>
+          <span class="value" id="roll"></span>
+        </div>
+        <hr />
+        <div class="each-text">
+          <span class="label">Application Status:</span>
+          <span class="value" id="status">-</span>
+        </div>
+        <hr />
+        <div class="each-text">
+          <span class="label">Remarks:</span>
+          <span class="value" id="remarks">-</span>
+        </div>
+        <hr />
+        <div class="btn-area">
+          <button class="btn_submit" id="submit_button">Submit</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-content">
+        <p>
+          Designed and Developed by : Maulana Abul Kalam Azad University of
+          Technology &copy; 2024. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <script src="app-status.js"></script>
+  </body>
 </html>
