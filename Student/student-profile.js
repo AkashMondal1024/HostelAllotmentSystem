@@ -118,17 +118,15 @@ function updateDateTime() {
   const datetimeDisplay = document.getElementById("datetime-display");
   const now = new Date();
 
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  const day = now.toLocaleString("en-US", { weekday: "long" });
+  const date = now.toLocaleDateString("en-GB"); // DD/MM/YYYY
+  const time = now.toLocaleString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-  };
-
-  datetimeDisplay.textContent = now.toLocaleString("en-US", options);
+    hour12: true,
+  });
+  datetimeDisplay.innerHTML = `${day}<br>${date}<br>${time}`;
 }
 
 // Update every second
