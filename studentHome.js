@@ -33,6 +33,9 @@ document.addEventListener("DOMContentLoaded", function () {
   btn[4].addEventListener("click", function () {
     window.location.href = "Student/canteen.html";
   });
+  btn[6].addEventListener("click", function () {
+    window.location.href = "Student/complaint.html";
+  });
 });
 
 const client = new Appwrite.Client();

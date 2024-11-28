@@ -12,7 +12,6 @@ const storage = new Appwrite.Storage(client); // Initialize storage client
 const DATABASE_ID = "66e4b088002534a2ffe1";
 const COLLECTION_ID = "670257ac0031bc7067ce";
 
-// Function to fetch and display applications
 function displayApplications() {
   const applicationsTableBody = document.getElementById(
     "applications-table-body"
@@ -20,14 +19,8 @@ function displayApplications() {
   const messageElement = document.getElementById("message");
 
   // Clear the table body before adding new rows
-  applicationsTableBody.innerHTML = "";
-
-  if (!applicationsTableBody) {
-    console.error("Table body not found");
-    if (messageElement) {
-      messageElement.textContent = "Application table not found.";
-    }
-    return;
+  if (applicationsTableBody) {
+    applicationsTableBody.innerHTML = "";
   }
 
   // Only fetch applications where Processed is false
@@ -36,59 +29,113 @@ function displayApplications() {
       Appwrite.Query.equal("Processed", false),
     ])
     .then((response) => {
-      console.log(response.documents); // Log the fetched documents
-
       const applications = response.documents;
 
       if (applications.length === 0) {
-        messageElement.textContent = "No applications found.";
+        console.log("No applications found where Processed is false.");
+        if (messageElement) {
+          messageElement.textContent = "No applications found.";
+        }
         return;
       }
 
-      applications.forEach((app) => {
-        const row = document.createElement("tr");
+      // Extract incomes and distances for score calculation
+      const incomes = applications
+        .map((app) => app.FamilyAnnualIncome)
+        .filter((income) => !isNaN(income));
 
-        // Create cells for each application field
-        row.innerHTML = `
-              <td>${app.Name || "N/A"}</td>
-              <td>${app.RegistrationNumber || "N/A"}</td>
-              <td>${app.RollNo || "N/A"}</td>
-              <td>${app.Degree || "N/A"}</td>
-              <td>${app.Stream || "N/A"}</td>
-              <td>${app.Semester || "N/A"}</td>
-              <td>${app.FamilyAnnualIncome || "N/A"}</td>
-              <td>${app.Distance || "N/A"}</td>
-              <td><a href="#" onclick="viewAadhar('${
-                app.AadharFileID || "N/A"
-              }')" target="_blank">View Aadhar</a></td>
-              <td>
-                <select id="status-${app.$id}">
-                  <option value="Pending" ${
-                    app.Status === "Pending" ? "selected" : ""
-                  }>Pending</option>
-                  <option value="Accepted" ${
-                    app.Status === "Accepted" ? "selected" : ""
-                  }>Accepted</option>
-                  <option value="Rejected" ${
-                    app.Status === "Rejected" ? "selected" : ""
-                  }>Rejected</option>
-                </select>
-              </td>
-              <td>
-                <input type="text" id="remarks-${app.$id}" value="${
-          app.Remarks || ""
-        }" placeholder="Add remarks" />
-              </td>
-              <td>
-                <button onclick="submitApplication('${app.$id}', '${
-          app.AadharFileID || "N/A"
-        }')">Submit</button>
-              </td>
-            `;
+      const distances = applications
+        .map((app) => app.Distance)
+        .filter((distance) => !isNaN(distance));
 
-        // Append the row to the table body
-        applicationsTableBody.appendChild(row);
+      const maxIncome = Math.max(...incomes);
+      const minIncome = Math.min(...incomes);
+      const maxDistance = Math.max(...distances);
+      const minDistance = Math.min(...distances);
+
+      console.log("Max Income:", maxIncome);
+      console.log("Min Income:", minIncome);
+      console.log("Max Distance:", maxDistance);
+      console.log("Min Distance:", minDistance);
+
+      // Add scores to applications
+      const scoredApplications = applications.map((app) => ({
+        ...app,
+        score:
+          (maxIncome - app.FamilyAnnualIncome) / (maxIncome - minIncome) +
+          (app.Distance - minDistance) / (maxDistance - minDistance),
+      }));
+
+      // Sort by score in descending order
+      scoredApplications.sort((a, b) => {
+        if (b.score !== a.score) {
+          return b.score - a.score; // Higher score first
+        }
+        return new Date(a.$createdAt) - new Date(b.$createdAt); // Earlier application first
       });
+
+      // Group applications by semester
+      const groupedBySemester = {};
+      scoredApplications.forEach((app) => {
+        const semester = app.Semester || "Unknown";
+        if (!groupedBySemester[semester]) {
+          groupedBySemester[semester] = [];
+        }
+        groupedBySemester[semester].push(app);
+      });
+
+      // Render grouped applications
+      Object.keys(groupedBySemester)
+        .sort((a, b) => a - b) // Sort semesters numerically
+        .forEach((semester) => {
+          // Create a heading for each semester
+          const semesterHeading = document.createElement("tr");
+          semesterHeading.innerHTML = `<th colspan="12" style="text-align:left;">Semester ${semester}</th>`;
+          applicationsTableBody.appendChild(semesterHeading);
+
+          // Render applications for this semester
+          groupedBySemester[semester].forEach((app) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${app.Name || "N/A"}</td>
+                <td>${app.RegistrationNumber || "N/A"}</td>
+                <td>${app.RollNo || "N/A"}</td>
+                <td>${app.Degree || "N/A"}</td>
+                <td>${app.Stream || "N/A"}</td>
+                <td>${app.Semester || "N/A"}</td>
+                <td>${app.FamilyAnnualIncome || "N/A"}</td>
+                <td>${app.Distance || "N/A"}</td>
+                <td>${app.score.toFixed(2) || "N/A"}</td>
+                <td><a href="#" onclick="viewAadhar('${
+                  app.AadharFileID || "N/A"
+                }')" target="_blank">View Aadhar</a></td>
+                <td>
+                  <select id="status-${app.$id}">
+                    <option value="Pending" ${
+                      app.Status === "Pending" ? "selected" : ""
+                    }>Pending</option>
+                    <option value="Accepted" ${
+                      app.Status === "Accepted" ? "selected" : ""
+                    }>Accepted</option>
+                    <option value="Rejected" ${
+                      app.Status === "Rejected" ? "selected" : ""
+                    }>Rejected</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="text" id="remarks-${app.$id}" value="${
+              app.Remarks || ""
+            }" placeholder="Add remarks" />
+                </td>
+                <td>
+                  <button onclick="submitApplication('${app.$id}', '${
+              app.AadharFileID || "N/A"
+            }')">Submit</button>
+                </td>
+              `;
+            applicationsTableBody.appendChild(row);
+          });
+        });
     })
     .catch((error) => {
       console.error("Failed to fetch applications:", error);
@@ -99,8 +146,22 @@ function displayApplications() {
     });
 }
 
+// Function to view Aadhar
+function viewAadhar(aadharFileId) {
+  if (aadharFileId === "N/A") {
+    alert("Aadhar file not available.");
+    return;
+  }
+
+  const aadharUrl = storage.getFilePreview(
+    "67043852000455e53296",
+    aadharFileId
+  );
+  window.open(aadharUrl.href, "_blank");
+}
+
 // Function to submit application status and remarks
-function submitApplication(applicationId, AadharFileID) {
+function submitApplication(applicationId, aadharFileId) {
   const status = document.getElementById(`status-${applicationId}`).value;
   const remarks = document.getElementById(`remarks-${applicationId}`).value;
 
@@ -113,67 +174,36 @@ function submitApplication(applicationId, AadharFileID) {
     })
     .then(() => {
       // If the application is rejected, delete the Aadhar file
-      if (status === "Rejected" && AadharFileID !== "N/A") {
-        deleteAadharFile(AadharFileID);
+      if (status === "Rejected" && aadharFileId !== "N/A") {
+        deleteAadharFile(aadharFileId);
       } else {
-        alert("Application updated successfully!");
+        alert("Application updated successfully.");
       }
 
-      // Remove the corresponding row from the table
-      const row = document
-        .querySelector(
-          `button[onclick="submitApplication('${applicationId}', '${AadharFileID}')"]`
-        )
-        .closest("tr");
-      if (row) {
-        row.remove(); // Remove the row from the table
-      }
+      // Refresh the applications list
+      displayApplications();
     })
     .catch((error) => {
       console.error("Failed to update application:", error);
-      alert("Failed to update application.");
+      alert("Failed to update application. Please try again.");
     });
 }
 
-// Function to delete Aadhar file from the bucket
-function deleteAadharFile(AadharFileID) {
-  const bucketId = "67043852000455e53296"; // Your bucket ID
-
+// Function to delete Aadhar file
+function deleteAadharFile(aadharFileId) {
   storage
-    .deleteFile(bucketId, AadharFileID)
+    .deleteFile("67043852000455e53296", aadharFileId)
     .then(() => {
-      console.log("Aadhar file deleted successfully.");
       alert("Aadhar file deleted successfully.");
     })
     .catch((error) => {
       console.error("Failed to delete Aadhar file:", error);
-      alert("Failed to delete Aadhar file.");
+      alert("Failed to delete Aadhar file. Please try again.");
     });
 }
 
-// Function to view Aadhar file
-function viewAadhar(AadharFileID) {
-  if (AadharFileID === "N/A") {
-    console.error("No AadharFileID available.");
-    alert("Aadhar File ID is not available.");
-    return;
-  }
-
-  const bucketId = "67043852000455e53296"; // Your bucket ID
-  const projectId = "66cfe746002e495cbc84"; // Your project ID
-  console.log("Viewing Aadhar file with ID:", AadharFileID); // Debugging line
-  const url = `https://cloud.appwrite.io/v1/storage/buckets/${bucketId}/files/${AadharFileID}/view?project=${projectId}&mode=admin`;
-
-  window.open(url, "_blank"); // Opens the Aadhar file in a new tab
-}
-
-// Ensure the DOM is fully loaded before running the display function
-document.addEventListener("DOMContentLoaded", function () {
-  // Ensure that displayApplications is only called once
-  if (typeof displayApplications === "function") {
-    displayApplications();
-  }
-});
+// Initialize display on page load
+document.addEventListener("DOMContentLoaded", displayApplications);
 
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("dashboard").addEventListener("click", function () {
