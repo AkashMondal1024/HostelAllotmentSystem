@@ -1,17 +1,22 @@
 {
-  "name": "project",
+  "name": "starter-template",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index"
+    "format": "prettier --write ."
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
     "appwrite": "^15.0.0",
     "express": "^4.19.2",
     "nodemailer": "^6.9.16"
+=======
+    "node-appwrite": "^12.0.1"
+>>>>>>> 4f86fa98b7308d6fe28d1c80267cc507884e8853
   },
-  "description": ""
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  }
 }
