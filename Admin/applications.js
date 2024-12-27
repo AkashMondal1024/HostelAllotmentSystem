@@ -2,28 +2,51 @@
 const client = new Appwrite.Client();
 
 client
-  .setEndpoint("https://cloud.appwrite.io/v1") // Your Appwrite endpoint
-  .setProject("66cfe746002e495cbc84"); // Your project ID
+  .setEndpoint("https://cloud.appwrite.io/v1")
+  .setProject("66cfe746002e495cbc84");
 
 const databases = new Appwrite.Databases(client);
-const storage = new Appwrite.Storage(client); // Initialize storage client
+const storage = new Appwrite.Storage(client);
 
 // Constants for database and collection IDs
 const DATABASE_ID = "66e4b088002534a2ffe1";
 const COLLECTION_ID = "670257ac0031bc7067ce";
+const USERS_COLLECTION_ID = "66e4b098001d3dd600f9";
+
+// Function to fetch email using registration number
+async function fetchEmail(documentId) {
+  try {
+    // First get the registration number from the applications collection
+    const application = await databases.getDocument(DATABASE_ID, COLLECTION_ID, documentId);
+    const registrationNumber = application.RegistrationNumber;
+
+    // Then fetch the email from users collection using registration number
+    const response = await databases.listDocuments(DATABASE_ID, USERS_COLLECTION_ID, [
+      Appwrite.Query.equal("RegistrationNumber", registrationNumber)
+    ]);
+
+    if (response.documents.length > 0) {
+      const email = response.documents[0].Email;
+      console.log('Email:', email);
+      return email;
+    } else {
+      console.log('No email found for registration number:', registrationNumber);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching email:', error);
+    return null;
+  }
+}
 
 function displayApplications() {
-  const applicationsTableBody = document.getElementById(
-    "applications-table-body"
-  );
+  const applicationsTableBody = document.getElementById("applications-table-body");
   const messageElement = document.getElementById("message");
 
-  // Clear the table body before adding new rows
   if (applicationsTableBody) {
     applicationsTableBody.innerHTML = "";
   }
 
-  // Only fetch applications where Processed is false
   databases
     .listDocuments(DATABASE_ID, COLLECTION_ID, [
       Appwrite.Query.equal("Processed", false),
@@ -86,14 +109,12 @@ function displayApplications() {
 
       // Render grouped applications
       Object.keys(groupedBySemester)
-        .sort((a, b) => a - b) // Sort semesters numerically
+        .sort((a, b) => a - b)
         .forEach((semester) => {
-          // Create a heading for each semester
           const semesterHeading = document.createElement("tr");
           semesterHeading.innerHTML = `<th colspan="12" style="text-align:left;">Semester ${semester}</th>`;
           applicationsTableBody.appendChild(semesterHeading);
 
-          // Render applications for this semester
           groupedBySemester[semester].forEach((app) => {
             const row = document.createElement("tr");
             row.innerHTML = `
@@ -110,7 +131,7 @@ function displayApplications() {
                   app.AadharFileID || "N/A"
                 }')" target="_blank">View Aadhar</a></td>
                 <td>
-                  <select id="status-${app.$id}">
+                  <select id="status-${app.$id}" onchange="handleStatusChange('${app.$id}')">
                     <option value="Pending" ${
                       app.Status === "Pending" ? "selected" : ""
                     }>Pending</option>
@@ -132,7 +153,7 @@ function displayApplications() {
               app.AadharFileID || "N/A"
             }')">Submit</button>
                 </td>
-              `;
+            `;
             applicationsTableBody.appendChild(row);
           });
         });
@@ -140,10 +161,23 @@ function displayApplications() {
     .catch((error) => {
       console.error("Failed to fetch applications:", error);
       if (messageElement) {
-        messageElement.textContent =
-          "Failed to fetch applications. Please try again.";
+        messageElement.textContent = "Failed to fetch applications. Please try again.";
       }
     });
+}
+
+// Function to handle status change
+async function handleStatusChange(documentId) {
+  console.log('Document ID:', documentId);
+  const select = document.getElementById(`status-${documentId}`);
+  const selectedStatus = select.value;
+  console.log('Selected Status:', selectedStatus);
+  
+  // Fetch and store the email
+  const email = await fetchEmail(documentId);
+  if (email) {
+    select.setAttribute('data-email', email);
+  }
 }
 
 // Function to view Aadhar
@@ -160,19 +194,35 @@ function viewAadhar(aadharFileId) {
   window.open(aadharUrl.href, "_blank");
 }
 
-// Function to submit application status and remarks
+// Updated submit application function
 function submitApplication(applicationId, aadharFileId) {
   const status = document.getElementById(`status-${applicationId}`).value;
   const remarks = document.getElementById(`remarks-${applicationId}`).value;
+  const select = document.getElementById(`status-${applicationId}`);
+  const email = select.getAttribute('data-email');
+
+  console.log('Submitting application with:', {
+    applicationId,
+    status,
+    remarks,
+    email
+  });
 
   // Update the application status and remarks
   databases
     .updateDocument(DATABASE_ID, COLLECTION_ID, applicationId, {
       Status: status,
       Remarks: remarks,
-      Processed: true, // Mark the application as processed
+      Processed: true,
     })
     .then(() => {
+        var params={
+            send_to : email,
+            boolean : status
+        }
+        emailjs.send("service_i7ieu8d","template_xx5kg4o", params).then(function (res){
+            alert("Mail Sent! " + res.status);
+        })
       // If the application is rejected, delete the Aadhar file
       if (status === "Rejected" && aadharFileId !== "N/A") {
         deleteAadharFile(aadharFileId);
@@ -205,6 +255,7 @@ function deleteAadharFile(aadharFileId) {
 // Initialize display on page load
 document.addEventListener("DOMContentLoaded", displayApplications);
 
+// Navigation event listeners
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("dashboard").addEventListener("click", function () {
     window.location.href = "../adminHome.html";
