@@ -1,122 +1,133 @@
-body{
-    font-family: 'Kanit',sans-serif;
-    background-color: #D3C5E5;
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Kanit&family=Roboto:wght@400;500;700&display=swap");
+* {
+  font-family: "Kanit", sans-serif;
 }
-.buttons{
-    border-radius: 6px; 
-    border: none; 
-    height: 40px; 
-    background-color: #735DA5;
-    cursor: pointer;
-    font-family: 'Kanit',sans-serif;
-    color: #D3C5E5;
-    font-size: 17px;
-}
-.buttons:hover{
-    background: #8a79b0;
-}
-.buttons:active{
-    background: #6a44bc;
-}
-header{
-    height: 50px;
-    width: auto;
-    background: #735DA5;
-    font-size: 30px;
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url("background5.jpg") no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #D3C5E5;
+  }
+
+.sidebar {
+  width: 240px;
+  margin-top: 66px;
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  border-radius: 8px;
+  margin-left: 16px;
+  padding-bottom: 16px;
 }
-.navbar-dark-section {
-    position: absolute;
-    left: 0;
-    width: 220px; 
-    height: 100%;
-    background-color: #443861;
-    
+.datetime-display {
+  font-family: "DM Serif Text", serif;
+  font-size: 16px;
+  color: rgb(11, 87, 11);
+  text-align: center; 
+  margin: 7px 0;
+  padding: 10px;
+  width: 80%;
+  border-radius: 5px; 
+  font-weight: 590;
+  letter-spacing: 1px;
 }
-.abcd {
-    display: flex;
-    width: 100%;
-    background-color: #D3C5E5; /* Same as navbar background color */
-    /* flex-grow: 1; */
-    justify-content: space-between;
+.buttons {
+  width: 86%;
+  padding: 12px;
+  margin: 10px 0;
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
 }
-.dashboard button {
-    margin: 10px 0;
-    width: 80%;
-    background-color: #D3C5E5;
-    color: #D3C5E5;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #735DA5;
+.buttons:hover {
+  transform: scale(1.03);
 }
-.dashboard button:hover {
-    background-color: #B4A0E5;
+.buttons:active {
+  background-color: #107526;
 }
-.dashboard button:active{
-    background: #6a44bc;
-    color: white;
+.main-content {
+  padding: 20px;
+  width: 100%;
 }
-.dashboard {
-    width: 220px; /* Updated width */
-    height: 93.5vh; /* Full height of the screen */
-    background-color: #443861;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.all-info-container{
-    display: flex;
-    justify-content: space-between;
-    width: 1150px;
-    margin-right: 100px;
-    border-color: #735DA5;
-    border-width: 4px; 
-    border-style: solid;
-    align-items: center;
-    height: 570px;
+hr {
+  border: 1px solid #2b2a2a;
+  margin: 10px 0 20px;
 }
 
-.content{
+#mess-section {
+    margin-top: 20px;
+  }
+  
+  .status-text {
+    margin-top: 10px;
+    color: #fff;
+    font-size: 16px;
+  }
+
+  .main-content {
+    display: flex;
+    flex-direction: row;
     padding: 20px;
-    /* display: flex;
-    justify-content: space-between; */
-}
-
-.meal{
-    font-size: 27px;
-    font-weight: 600;
-    display: flex;
+    /* margin-left: 220px; */
+    flex-grow: 1;
+    padding-top: 70px;
     justify-content: center;
-}
+  }
 
-.each-text {
-    width: 300px;
+  .student-info {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    max-width: 500px;
+    /* height: 550px; */
+    margin-right: 20px;
+  }
+
+  .student-info h2 {
+    text-align: center;
+    color: #343a40;
+    margin-bottom: 15px;
+  }
+  
+  .student-info p {
+    color: #495057;
+    margin: 5px 0;
+    font-size: 18px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px; /* Optional: adds space between each row */
-    border-color: #735DA5;
-    border-width: 1px; 
-    border-style: solid;
-    margin: 14px;
+  }
+  
+  .student-info .label {
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  .student-info .data {
+    text-align: right;
+    font-weight: normal;
+  }
+
+footer {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 20px 0;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  font-size: 0.9rem;
+  box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.2);
 }
 
-.label {
-    font-weight: 500;
-    margin-right: 1px; /* Adjust the space between label and value if needed */
-    margin: 6px;
-}
-
-.value {
-    font-weight: 300;
-    margin: 6px;
-}
-
-.student-image{
-    height: 190px;
-    width: auto;
+.footer-content p {
+  margin: 5px 0;
 }

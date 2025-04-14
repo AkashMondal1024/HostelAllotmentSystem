@@ -81,12 +81,12 @@ if (!userId) {
           document.getElementById("dob").textContent = doc.DOB || "N/A";
 
           // Fetch the student's profile photo from Appwrite Storage
-          const photoFileId = doc.PhotoFileId; // Assuming `PhotoFileId` stores the image file ID
+          const photoFileId = doc.PhotoFileId; // `PhotoFileId` stores the image file ID
           if (photoFileId) {
             const imageElement = document.querySelector(".student-image");
 
             // Fetch the file URL from Appwrite Storage
-            const fileUrl = storage.getFileView(BUCKET_ID, photoFileId); // Use getFileView for image files
+            const fileUrl = storage.getFileView(BUCKET_ID, photoFileId);
             imageElement.src = fileUrl; // Set the image source to the URL
             console.log("Image URL:", fileUrl); // Log the URL to verify
           } else {

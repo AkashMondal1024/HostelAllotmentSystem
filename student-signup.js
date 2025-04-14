@@ -47,7 +47,7 @@ function validateForm() {
     "Physically Handicapped": "handicapped",
     "Category": "category",
     "Password": "password",
-    "Photo": "photo" // File input, checked separately below
+    "Photo": "photo"
   };
 
   const missingFields = [];
@@ -93,8 +93,8 @@ function signup() {
   const gender = document.getElementById("gender").value;
   const handicapped = document.getElementById("handicapped").value;
   const category = document.getElementById("category").value;
-  const password = document.getElementById("password").value; // Password field
-  const photo = document.getElementById("photo").files[0]; // Get the file from input
+  const password = document.getElementById("password").value; 
+  const photo = document.getElementById("photo").files[0];
   const userId = Appwrite.ID.unique();
 
   const profileDetails = {
@@ -230,7 +230,7 @@ function createUserAccount(userId, email, password, name) {
 
 // Function to delete the uploaded photo if signup fails
 function deletePhoto(userId) {
-  const bucketId = '66edbc16003335ab378a'; // Replace with your Appwrite storage bucket ID
+  const bucketId = '66edbc16003335ab378a';
 
   storage.deleteFile(bucketId, userId)
     .then(() => {
@@ -243,8 +243,8 @@ function deletePhoto(userId) {
 
 // Function to delete the database document if signup fails
 function deleteDatabaseRecord(userId) {
-  const databaseId = "66e4b088002534a2ffe1"; // Replace with your database ID
-  const collectionId = "66e4b098001d3dd600f9"; // Replace with your collection ID
+  const databaseId = "66e4b088002534a2ffe1"; 
+  const collectionId = "66e4b098001d3dd600f9";
 
   databases.deleteDocument(databaseId, collectionId, userId)
     .then(() => {
