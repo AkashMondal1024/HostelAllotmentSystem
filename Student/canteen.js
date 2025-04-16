@@ -64,7 +64,8 @@ if (!userId) {
       document.getElementById('name').textContent = 'Failed to load name.';
     });
 }
-
+let messUniqueID = '';
+let messIDchecker = '';
 function updateDateTime() {
   const datetimeDisplay = document.getElementById('datetime-display');
   const now = new Date();
@@ -99,15 +100,65 @@ function updateDateTime() {
   const monthName = monthNames[parseInt(monthNumber) - 1];
 
   const monthYear = monthName + ' ' + year;
+  messIDchecker = monthName + year;
 
   document.getElementById('month-year').textContent = monthYear;
   datetimeDisplay.innerHTML = `${day}<br>${date}<br>${time}`;
 }
-
 // Update every second
+let checker2 = "";
 setInterval(updateDateTime, 1000);
 updateDateTime();
+databases
+  .getDocument(DATABASE_ID, STUDENT_INFO, userId)
+  .then((doc) => {
+    const regn = doc.RegistrationNumber;
+    messIDchecker = regn + messIDchecker;
+    checker2 = messIDchecker;
 
+    databases
+      .getDocument(DATABASE_ID, MESS_ID, messIDchecker)
+      .then((response) => {
+        console.log('Document exists:', response);
+        const submitBtn = document.getElementById('submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Already Submitted for this month';
+        submitBtn.style.cursor = 'not-allowed';
+        submitBtn.style.backgroundColor = 'gray';
+        console.log(checker2);
+        databases
+          .getDocument(DATABASE_ID, MESS_ID, checker2)
+          .then((doc) => {
+            const bool = doc.Subscribed;
+            console.log('Subscribed:', bool);
+
+            // Get the container element
+            const container = document.getElementById('canteenOptionContainer');
+
+            // Clear the container
+            container.innerHTML = '';
+
+            // Create a text node with the appropriate value
+            const textNode = document.createTextNode(bool ? 'Yes' : 'No');
+
+            // Add the text node to the container
+            container.appendChild(textNode);
+          })
+          .catch((error) => {
+            console.error('Error fetching mess document:', error);
+          });
+      })
+      .catch((error) => {
+        if (error.code === 404) {
+          console.log('Document not found.');
+        } else {
+          console.error('Error checking document:', error);
+        }
+      });
+  })
+  .catch((error) => {
+    console.error('Error fetching document:', error);
+  });
 document.getElementById('submit-btn').addEventListener('click', async () => {
   try {
     const user = await account.get();
@@ -142,7 +193,7 @@ document.getElementById('submit-btn').addEventListener('click', async () => {
 
     const option = document.getElementById('canteenOption').value.toLowerCase();
     const subscribed = option === 'yes';
-    const messUniqueID = regn + monthYear.replace(/\s+/g, '');
+    messUniqueID = regn + monthYear.replace(/\s+/g, '');
     await databases.createDocument(DATABASE_ID, MESS_ID, messUniqueID, {
       StudentID: studentID,
       Name: name,
@@ -157,3 +208,5 @@ document.getElementById('submit-btn').addEventListener('click', async () => {
     alert('Failed to record mess data. Please try again.');
   }
 });
+
+// console.log(messUniqueID);
