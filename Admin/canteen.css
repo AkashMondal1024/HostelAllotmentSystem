@@ -1,0 +1,107 @@
+body {
+  font-family: 'Kanit', sans-serif;
+  background-color: #d3c5e5;
+}
+.buttons {
+  border-radius: 6px;
+  border: none;
+  height: 40px;
+  background-color: #735da5;
+  cursor: pointer;
+  font-family: 'Kanit', sans-serif;
+  color: #d3c5e5;
+  font-size: 17px;
+}
+.buttons:hover {
+  background: #8a79b0;
+  transform: scale(1.03);
+}
+.buttons:active {
+  background: #6a44bc;
+  transform: scale(1.1);
+}
+header {
+  height: 50px;
+  width: auto;
+  background: #735da5;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d3c5e5;
+}
+
+.dashboard {
+  width: 220px; 
+  height: 93.5vh;
+  background-color: #443861;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.dashboard button {
+  margin: 10px 0;
+  width: 80%;
+  background-color: #d3c5e5;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #735da5;
+}
+.dashboard button:hover {
+  background-color: #b4a0e5;
+}
+.dashboard button:active {
+  background: #6a44bc;
+  color: white;
+}
+.navbar-dark-section {
+  position: absolute;
+  left: 0;
+  width: 219px;
+  height: 100%;
+  background-color: #443861;
+}
+.all-info-container {
+  flex: 1;
+  display: flex;
+  padding: 20px;
+  border-color: #735da5;
+}
+#monthYearInput {
+  border-radius: 5px;
+  border: 1px solid #735da5;
+}
+.studentResults {
+  flex: 1;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  overflow-y: auto;
+}
+.canteen-query-form {
+  width: 300px;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.studentResults{
+  height : 560px;
+  display: flex;
+  justify-content: center;
+}
+
+.student-entry td, 
+.student-entry th {
+  text-align: center;
+}
+
+.student-entry {
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+
