@@ -78,4 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("complaints").addEventListener("click", function () {
     window.location.href = "complaints.html";
   });
+  document.getElementById("canteen").addEventListener("click", function () {
+    window.location.href = "canteen.html";
+  });
 });

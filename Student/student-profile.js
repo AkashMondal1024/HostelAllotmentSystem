@@ -15,6 +15,9 @@ document.addEventListener("DOMContentLoaded", function () {
   btn[4].addEventListener("click", function () {
     window.location.href = "canteen.html";
   });
+  btn[6].addEventListener("click", function () {
+    window.location.href = "complaint.html";
+  });
 });
 
 // Initialize Appwrite SDK
