@@ -187,11 +187,10 @@ function viewAadhar(aadharFileId) {
     return;
   }
 
-  const aadharUrl = storage.getFilePreview(
-    "67043852000455e53296",
-    aadharFileId
-  );
-  window.open(aadharUrl.href, "_blank");
+  const projectId = "66cfe746002e495cbc84";
+  const bucketId = "67043852000455e53296";
+  const aadharUrl = `https://cloud.appwrite.io/v1/storage/buckets/${bucketId}/files/${aadharFileId}/view?project=${projectId}`;
+  window.open(aadharUrl, "_blank");
 }
 
 // Updated submit application function
